@@ -1,0 +1,66 @@
+body {
+    font-family: Calibri;
+    font-size: smaller;
+    margin: 0;
+    height: 100%;
+}
+
+table {
+    border-spacing: 0;
+}
+
+.functions_window_item {
+    display: flex;
+    cursor: default;
+}
+
+.function_icon {
+    background-image: url("/img/function_icon.png");
+    background-repeat: no-repeat;
+    height: 18px;
+    width: 18px;
+    display: inline-block;
+}
+
+
+#toolbar {
+    height: 130px;
+    background-image: url("/img/toolbar_sm.png");
+    background-repeat: no-repeat;
+    /* background-size: contain; */
+    width: 100vw;
+}
+
+#mainarea {
+    height: 100%;
+}
+
+#maintable {
+    height: 100%;
+}
+
+#leftcol {
+    /* width: 390px; */
+}
+
+#rightcol {
+    background-image: url("/img/bg.png");
+    width: 1230px;
+}
+
+#functionswindow {
+    background-color: white;
+    overflow: scroll;
+    width: 305px;
+    height: 500px;
+}
+
+#output_window {
+    background-image: url("/img/output_window.png");
+    background-repeat: no-repeat;
+    z-index: -10;
+    height: 235px;
+    width: 1540px;
+    position: fixed;
+    bottom: 0;
+}
