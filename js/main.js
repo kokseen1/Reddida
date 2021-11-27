@@ -90,6 +90,7 @@ $(document).on("click", ".asm-title", function () {
 $(document).on("dblclick", ".asm-title", function () {
     dblclicked_title = $(this);
     let comments_url = DOMAIN + $(this).data("permalink") + ".json";
+    $(clicked_title).css("background-color", "transparent");
     subreddit_save = $("#rightcol").html();
     $("#rightcol").empty();
     $.getJSON(comments_url, function (data) {
