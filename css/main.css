@@ -1,6 +1,6 @@
 html {
-    /* height: 100vh; */
-    overflow-x: hidden;
+    height: 100vh;
+    width: 100vw;
 }
 
 body {
@@ -8,63 +8,89 @@ body {
     font-size: smaller;
     margin: 0;
     height: 100%;
+    /* overflow: hidden; */
+    /* display: flex; */
+    /* flex-flow: column; */
 }
 
-table {
+table, td {
     border-spacing: 0;
+    padding: 0;
 }
 
 .functions-window-item {
     display: flex;
     cursor: default;
+    outline-offset: -1px;
+}
+
+.function_item_text {
+    line-height: 22px;
 }
 
 .function-icon {
     background-image: url("/img/function_icon.png");
     background-repeat: no-repeat;
+    background-size: contain;
     height: 18px;
     width: 18px;
+    margin: 2px;
     display: inline-block;
 }
 
+#mainarea {
+    background-color: violet;
+    height: calc(100vh - 129px - 130px);
+}
+
+#maintable {
+    height: 100%;
+    width: 100%;
+}
+
+/* #maintable-body {
+    height: 100%;
+}
 
 #mainrow {
-    height: 100px;
-}
+    height: 100%;
+} */
 
-#toolbar {
-    height: 130px;
-    background-image: url("/img/toolbar_sm.png");
-    background-repeat: no-repeat;
-    /* background-size: contain; */
-    width: 100vw;
-}
 
 
 #rightcol {
     background-image: url("/img/bg.png");
-    overflow-y: scroll;
-    overflow-x: scroll;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: scroll;
     white-space: pre-wrap;
-    width: 1240px;
-    height: 500px;
+    height: 100%;
+    width: 100%;
+}
+
+#leftcol {
+    width: 310px;
 }
 
 #functionswindow {
     background-color: white;
-    overflow: scroll;
-    width: 305px;
-    height: 500px;
+    overflow-y: scroll;
+    height: 100%;
+}
+
+#toolbar {
+    height: 130px;
+    background-image: url("/img/toolbar.png");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 #output-window {
+    height: 129px;
     background-image: url("/img/output_window.png");
     background-repeat: no-repeat;
+    background-size: cover;
     z-index: -10;
-    height: 235px;
-    width: 1540px;
-    position: fixed;
-    bottom: 0;
 }
 
 #messagebox {
@@ -139,5 +165,8 @@ table {
 
 .asm-head {
     color: #0000ff;
-    word-break: break-word;
+}
+
+.asm-comment {
+    color: #888888;
 }
