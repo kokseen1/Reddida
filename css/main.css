@@ -80,14 +80,14 @@ table, td {
 
 #toolbar {
     height: 130px;
-    background-image: url("/img/toolbar.png");
+    background-image: url("../img/toolbar.png");
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 #output-window {
     height: 129px;
-    background-image: url("/img/output_window.png");
+    background-image: url("../img/output_window.png");
     background-repeat: no-repeat;
     background-size: cover;
     z-index: -10;
@@ -99,7 +99,7 @@ table, td {
     width: 391px;
     border: 1px solid rgb(119, 119, 119);
     box-shadow: 0 0 5px #888888;
-    background-image: url("/img/messagebox.png");
+    background-image: url("../img/messagebox.png");
     background-repeat: no-repeat;
     position: absolute;
     top: 50%;
@@ -136,7 +136,7 @@ table, td {
 }
 
 .asm-toolbar {
-    background-image: url("/img/asm_icons.png");
+    background-image: url("../img/asm_icons.png");
     background-color: white;
     background-repeat: no-repeat;
     height: 15px;
