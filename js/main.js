@@ -35,7 +35,7 @@ function close_messagebox() {
 }
 
 // Populate the functions window with 50 subreddits from the frontpage
-$.getJSON("http://www.reddit.com/.json?limit=50", function (data) {
+$.getJSON(DOMAIN + "/.json?limit=50", function (data) {
     var comments_arr = [];
     $.each(data.data.children, function (i, item) {
         comments_arr.push(DOMAIN + item.data.permalink + ".json");
