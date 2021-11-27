@@ -29,7 +29,7 @@ table, td {
 }
 
 .function-icon {
-    background-image: url("/img/function_icon.png");
+    background-image: url("../img/function_icon.png");
     background-repeat: no-repeat;
     background-size: contain;
     height: 18px;
@@ -59,7 +59,7 @@ table, td {
 
 
 #rightcol {
-    background-image: url("/img/bg.png");
+    background-image: url("../img/bg.png");
     background-repeat: no-repeat;
     background-size: cover;
     overflow: scroll;
