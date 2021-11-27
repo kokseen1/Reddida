@@ -1,3 +1,8 @@
+html {
+    /* height: 100vh; */
+    overflow-x: hidden;
+}
+
 body {
     font-family: Calibri;
     font-size: smaller;
@@ -9,12 +14,12 @@ table {
     border-spacing: 0;
 }
 
-.functions_window_item {
+.functions-window-item {
     display: flex;
     cursor: default;
 }
 
-.function_icon {
+.function-icon {
     background-image: url("/img/function_icon.png");
     background-repeat: no-repeat;
     height: 18px;
@@ -22,6 +27,10 @@ table {
     display: inline-block;
 }
 
+
+#mainrow {
+    height: 100px;
+}
 
 #toolbar {
     height: 130px;
@@ -31,21 +40,14 @@ table {
     width: 100vw;
 }
 
-#mainarea {
-    height: 100%;
-}
-
-#maintable {
-    height: 100%;
-}
-
-#leftcol {
-    /* width: 390px; */
-}
 
 #rightcol {
     background-image: url("/img/bg.png");
-    width: 1230px;
+    overflow-y: scroll;
+    overflow-x: scroll;
+    white-space: pre-wrap;
+    width: 1240px;
+    height: 500px;
 }
 
 #functionswindow {
@@ -55,7 +57,7 @@ table {
     height: 500px;
 }
 
-#output_window {
+#output-window {
     background-image: url("/img/output_window.png");
     background-repeat: no-repeat;
     z-index: -10;
@@ -63,4 +65,79 @@ table {
     width: 1540px;
     position: fixed;
     bottom: 0;
+}
+
+#messagebox {
+    display: none;
+    height: 116px;
+    width: 391px;
+    border: 1px solid rgb(119, 119, 119);
+    box-shadow: 0 0 5px #888888;
+    background-image: url("/img/messagebox.png");
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+#messagebox-input {
+    border: 0px solid transparent;
+    outline: none;
+    top: 50px;
+    left: 100px;
+    width: 250px;
+    position: absolute;
+}
+
+#messagebox-input:focus {
+    outline: none;
+}
+
+.asm-box {
+    background-color: white;
+    border: 1px solid black;
+    box-shadow: 2px 2px #888888;
+    height: fit-content;
+    width: fit-content;
+    max-width: 500px;
+    display: inline-block;
+    margin: 40px;
+    /* margin-right: auto; */
+    /* position: relative; */
+    cursor: default;
+}
+
+.asm-toolbar {
+    background-image: url("/img/asm_icons.png");
+    background-color: white;
+    background-repeat: no-repeat;
+    height: 15px;
+    border-bottom: 1px solid black;
+    padding: 0;
+}
+
+.asm-content {
+    width: 100%;
+    white-space: pre-wrap;
+    padding-top: 40px;
+    padding-bottom: 15px;
+    margin-right: 105px;
+    font-family: Consolas;
+    color: #130d85;
+}
+
+.asm-var {
+    color: #00803a;
+}
+
+.asm-title {
+    width: 100%;
+    word-break: break-word;
+}
+
+.asm-head {
+    color: #0000ff;
+    word-break: break-word;
 }
