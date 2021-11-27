@@ -1,4 +1,4 @@
-const DOMAIN = "http://www.reddit.com";
+const DOMAIN = "https://www.reddit.com";
 
 var clicked_title;
 var subreddit_save;
