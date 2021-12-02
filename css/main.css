@@ -8,9 +8,6 @@ body {
     font-size: smaller;
     margin: 0;
     height: 100%;
-    /* overflow: hidden; */
-    /* display: flex; */
-    /* flex-flow: column; */
 }
 
 table, td {
@@ -48,15 +45,6 @@ table, td {
     width: 100%;
 }
 
-/* #maintable-body {
-    height: 100%;
-}
-
-#mainrow {
-    height: 100%;
-} */
-
-
 
 #rightcol {
     background-image: url("../img/bg.png");
@@ -70,12 +58,16 @@ table, td {
 
 #leftcol {
     width: 310px;
+    position: relative;
 }
 
 #functionswindow {
     background-color: white;
     overflow-y: scroll;
-    height: 100%;
+    position: absolute;
+    height: 80%;
+    width: 100%;
+    top: 0;
 }
 
 #toolbar {
@@ -121,6 +113,29 @@ table, td {
     outline: none;
 }
 
+#img-window-header {
+    background-color: #F0F0F0;
+    position: absolute;
+    background-image: url("../img/graphview.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100%;
+    top: 70%;
+    height: 30px;
+}
+
+#img-window {
+    background-color: #F0F0F0;
+    bottom: 0;
+    height: calc(30% - 30px);
+    width: 100%;
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-image: url("../img/graphview_image.png");
+}
+
 .asm-box {
     background-color: white;
     border: 1px solid black;
@@ -130,8 +145,6 @@ table, td {
     max-width: 500px;
     display: inline-block;
     margin: 40px;
-    /* margin-right: auto; */
-    /* position: relative; */
     cursor: default;
 }
 

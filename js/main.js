@@ -12,15 +12,13 @@ function retrieve_subreddit(subreddit) {
     $("#rightcol").empty();
     $.getJSON(subreddit_url, function (data) {
         $.each(data.data.children, function (i, item) {
-            $("<div/>", {
-                class: "asm-box"
-            })
+            $(`<div class="asm-box" data-url="${item.data.url}">`)
                 .append($("<div/>", {
                     class: "asm-toolbar"
                 }))
                 .append($("<div/>", {
                     class: "asm-content",
-                    html: `<p class='asm-title' data-permalink='${item.data.permalink}'>${item.data.title}</p><span class='asm-var'>Score</span>= dword ptr  <span class='asm-var'>${item.data.score.toString(16).toUpperCase()}h</span><br><span class='asm-var'>Comments</span>= dword ptr  <span class='asm-var'>${item.data.num_comments.toString(16).toUpperCase()}h</span>`
+                    html: `<p class='asm-title' data-permalink='${item.data.permalink}'>${item.data.title}</p><span class='asm-var'>Score</span>= dword ptr  <span class='asm-var'>${item.data.score.toString(16).toUpperCase()}h</span><br><span class='asm-var'>Comments</span>= dword ptr  <span class='asm-var'>${item.data.num_comments.toString(16).toUpperCase()}h</span><p class='asm-title'>${item.data.selftext}</p>`
                 }))
                 .appendTo("#rightcol");
         });
@@ -68,13 +66,14 @@ $(document).on("dblclick", ".functions-window-item", function (event) {
     retrieve_subreddit($(event.target).text());
 });
 
-// Grey the selected title when clicked
+// Grey the selected heading when clicked
 $(document).on("click", ".asm-head", function () {
     $(clicked_title).css("background-color", "transparent");
     clicked_title = $(this);
     $(clicked_title).css("background-color", "#e5e5e5");
 });
 
+// Display subreddit when double clicked from asm title
 $(document).on("dblclick", ".asm-head", function (event) {
     retrieve_subreddit($(event.target).text());
 });
@@ -95,7 +94,9 @@ $(document).on("dblclick", ".asm-title", function () {
     $("#rightcol").empty();
     $.getJSON(comments_url, function (data) {
         $.each(data[1].data.children, function (i, item) {
-            $('<div/>', { class: "asm-box" })
+            $('<div/>', {
+                class: "asm-box"
+            })
                 .append($("<div/>", {
                     class: "asm-toolbar"
                 }))
@@ -108,15 +109,23 @@ $(document).on("dblclick", ".asm-title", function () {
     });
 });
 
+// Check if URL is image
+function isValidImageURL(str) {
+    if (typeof str !== 'string') return false;
+    return !!str.match(/\w+\.(jpg|jpeg|gif|png|tiff|bmp)$/gi);
+}
+
 // Style box toolbars when selected and reset style for other boxes
 $(document).on("click", ".asm-box", function () {
     $("#rightcol").children().each(function (i, element) {
         $(element).children("div").first().css("background-color", "transparent");
-        // if (!clicked_title || clicked_title.is($(element).find(".asm-title"))) return;
-        // $(element).find(".asm-title").css("background-color", "transparent");
     });
     let clicked_box = $(this);
     $(clicked_box).children().first().css("background-color", "#a0cfcf");
+    img_url = $(clicked_box).data("url");
+    $("#img-window").css("background-image", `url(${img_url})`);
+    $("#img-window").attr("href", `${DOMAIN + $(clicked_box).find(".asm-title").data("permalink")}`);
+    if (!isValidImageURL(img_url)) $("#img-window").css("background-image", `url("../img/graphview_image.png")`);
 });
 
 // Check for Esc keypress to return to previous page
@@ -155,7 +164,6 @@ $(document).keyup(function (e) {
 
 // Insert and display initial box
 $(document).ready(function () {
-    console.log(window.innerHeight)
     $("<div/>", {
         class: "asm-box",
         css: {
