@@ -50,7 +50,7 @@ function repositionTileLeaderLine(tileObj) {
     if (!tileObj) return;
     let leaderLineArr = tileObj.leaderLineArr;
     if (!leaderLineArr || leaderLineArr.length == 0) return;
-    console.log(leaderLineArr)
+    // console.log(leaderLineArr)
     leaderLineArr.forEach(function (lL) {
         lL.position();
     })
@@ -227,7 +227,7 @@ $(document).on("dblclick", ".asm-title", function () {
     clearCanvas();
     $.getJSON(postCommentsUrl, function (jsonData) {
         // $.getJSON("comment.json", function (jsonData) {
-        console.log(jsonData);
+        // console.log(jsonData);
         generateComments(jsonData[1]);
     })
     // let comments_url = DOMAIN + $(this).data("permalink") + ".json";
