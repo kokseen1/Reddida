@@ -67,10 +67,10 @@ class Tile {
 
     insertToCanvas() {
         $("#rightcol").append(this.tileElem);
-        
+
     }
 
-    setAttributes(){
+    setAttributes() {
         this.tileElem.data("obj", this);
         this.tileElem.draggable({
             cancel: ".asm-content",
@@ -143,6 +143,8 @@ class Comment extends Tile {
             }));
 
         // Massive hit on performance
+        // Comment depth limit
+        // if (item.depth >= 2) return;
         // Generate the comment tree recursively
         generateComments(item.replies, this);
     };

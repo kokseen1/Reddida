@@ -139,8 +139,8 @@ table, td {
     width: 100%;
     position: absolute;
     background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+    /* background-size: contain; */
+    /* background-position: center; */
     background-image: url("../img/graphview_image.png");
 }
 
