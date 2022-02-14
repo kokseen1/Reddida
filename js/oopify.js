@@ -1,7 +1,8 @@
 const REDDIT_URL = "https://www.reddit.com";
 
 let clicked_title;
-let leaderLines = [];
+// let leaderLines = [];
+const leaderLines = new Set()
 let subreddit_save;
 let active_tiles = [];
 
@@ -130,7 +131,7 @@ class Tile {
                 color: "red",
                 size: 1.5,
             });
-            // leaderLines.push(leaderLineObj);
+            leaderLines.add(leaderLineObj);
             this.leaderLineArr.push(leaderLineObj);
             this.parent.leaderLineArr.push(leaderLineObj);
         }
@@ -250,12 +251,13 @@ function restoreCanvas() {
 
 function clearCanvas() {
     // Remove all active leaderlines
+    for (let lL of leaderLines){
     // leaderLines.forEach(lL => {
-    // lL.remove();
-    // });
+        lL.remove();
+    };
+    leaderLines.clear();
     $("#rightcol").empty();
-    $(".leader-line").remove();
-    // leaderLines = [];
+    // $(".leader-line").remove();
 }
 
 function saveAndClearCanvas() {
