@@ -2,6 +2,8 @@ const REDDIT_URL = "https://www.reddit.com";
 
 let clicked_title;
 let leaderLines = [];
+let subreddit_save;
+let active_tiles = [];
 
 let messagebox_active = () => $("#messagebox").is(":visible");
 
@@ -52,7 +54,12 @@ function repositionTileLeaderLine(tileObj) {
     if (!leaderLineArr || leaderLineArr.length == 0) return;
     // console.log(leaderLineArr)
     leaderLineArr.forEach(function (lL) {
+        // try {
         lL.position();
+        // } catch {
+
+        // }
+
     })
 }
 
@@ -77,10 +84,15 @@ function intToHex(i) {
 }
 
 class Tile {
-    constructor(rawJson, parentObj) {
+    constructor(rawJson, parentObj, customElem) {
         this.parent = parentObj;
         this.data = rawJson;
         this.leaderLineArr = [];
+        this.customElem = customElem;
+        this.generate();
+    }
+
+    generate() {
         // Tile template
         this.tileElem = $('<div/>', {
             class: "asm-box"
@@ -88,16 +100,21 @@ class Tile {
             .append($("<div/>", {
                 class: "asm-toolbar"
             }));
+
+
+        $("#rightcol").append(this.tileElem);
         // Store this class object in element
+
+        this.generateTiles();
+        this.generateArrows();
+
         this.tileElem.data("obj", this);
+
         this.tileElem.draggable({
             cancel: ".asm-content",
             // containment: "#rightcol", // doesnt work because margin is blocking
             drag: onTileDrag
         });
-        $("#rightcol").append(this.tileElem);
-        this.generateTiles();
-        this.generateArrows();
     }
 
     generateArrows() {
@@ -113,7 +130,7 @@ class Tile {
                 color: "red",
                 size: 1.5,
             });
-            leaderLines.push(leaderLineObj);
+            // leaderLines.push(leaderLineObj);
             this.leaderLineArr.push(leaderLineObj);
             this.parent.leaderLineArr.push(leaderLineObj);
         }
@@ -166,7 +183,18 @@ class Post extends Tile {
     };
 }
 
+class CustomTile extends Tile {
+    constructor(customElem) {
+        super(null, null, customElem = customElem)
+    }
 
+    generateTiles() {
+        this.tileElem.replaceWith(this.customElem);
+        this.tileElem = this.customElem;
+        // this.tileElem.css(this.customElem.css());
+    }
+
+}
 
 // Check for g keypress to open search for subreddit
 $(document).keyup(function (e) {
@@ -198,10 +226,9 @@ $(document).keydown(function (e) {
             return;
         }
         // History yet to implement
-        // if (subreddit_save) {
-        //     $("#rightcol").empty();
-        //     $("#rightcol").html(subreddit_save);
-        // }
+        else if (active_tiles.length) {
+            restoreCanvas();
+        }
     }
 });
 
@@ -211,49 +238,65 @@ function close_messagebox() {
     $("#messagebox-input").val("");
 }
 
-function clearCanvas() {
-    $("#rightcol").empty();
-    // Remove all active leaderlines
-    leaderLines.forEach(lL => {
-        lL.remove();
+
+function restoreCanvas() {
+    clearCanvas();
+    let prevObjsArr = active_tiles.pop();
+    prevObjsArr.forEach(e => {
+        e.generate();
+        // console.log(e)
     });
-    leaderLines = [];
 }
+
+function clearCanvas() {
+    // Remove all active leaderlines
+    // leaderLines.forEach(lL => {
+    // lL.remove();
+    // });
+    $("#rightcol").empty();
+    $(".leader-line").remove();
+    // leaderLines = [];
+}
+
+function saveAndClearCanvas() {
+    let objArr = [];
+    $(".asm-box").each(function () {
+        // console.log($(this).data("obj"))
+        let obj = $(this).data("obj");
+        // obj.leaderLineArr.forEach(function (lL) {
+        //     // if (lL)
+        //     try {
+        //         lL.remove();
+        //     }
+        //     catch (e) {
+
+        //     }
+        // })
+        if (!obj) return;
+        obj.leaderLineArr = [];
+        objArr.push(obj);
+    })
+    active_tiles.push(objArr);
+    clearCanvas();
+}
+
 
 // Retrieve comments of selected post when double clicked
 $(document).on("dblclick", ".asm-title", function () {
     let postObj = $(this).parent().parent().data("obj");
     let postCommentsUrl = getUrlFromPerma(postObj.data.data.permalink);
-    clearCanvas();
+    saveAndClearCanvas();
     $.getJSON(postCommentsUrl, function (jsonData) {
         // $.getJSON("comment.json", function (jsonData) {
         // console.log(jsonData);
         generateComments(jsonData[1]);
+        repositionVisibleLeaderLines();
     })
-    // let comments_url = DOMAIN + $(this).data("permalink") + ".json";
-    // $(clicked_title).css("background-color", "transparent");
-    // subreddit_save = $("#rightcol").html();
-    // $("#rightcol").empty();
-    // $.getJSON(comments_url, function (data) {
-    //     $.each(data[1].data.children, function (i, item) {
-    //         $('<div/>', {
-    //             class: "asm-box"
-    //         })
-    //             .append($("<div/>", {
-    //                 class: "asm-toolbar"
-    //             }))
-    //             .append($("<div/>", {
-    //                 class: "asm-content",
-    //                 html: `<p class='asm-head'>${item.data.author}</p><span class='asm-var'>Score</span>= dword ptr  <span class='asm-var'>${item.data.score.toString(16).toUpperCase()}h</span><p class='asm-title' data-permalink='${item.data.permalink}'>${item.data.body}</p>`
-    //             }))
-    //             .appendTo("#rightcol");
-    //     });
-    // });
 });
 
 
 function retrieve_subreddit(subName) {
-    clearCanvas();
+    saveAndClearCanvas();
     $.getJSON(getUrlFromSub(subName), function (jsonData) {
         // $.getJSON("sub.json", function (jsonData) {
         let postArr = jsonData.data.children;
@@ -265,16 +308,6 @@ function retrieve_subreddit(subName) {
     })
 }
 
-
-// $.getJSON(getUrlFromSub("askreddit"), function (jsonData) {
-//     // Iterate array of posts
-//     jsonData.data.children.forEach(postJson => {
-//         let post = new Post(postJson);
-//         // obj.printSelf();
-//         console.log(post.data);
-//     });
-// });
-
 function generateComments(commentsDict, parentObj) {
     if (!commentsDict.data || !commentsDict.data.children) return;
     commentsDict.data.children.forEach(commentJson => {
@@ -282,12 +315,6 @@ function generateComments(commentsDict, parentObj) {
         let commentObj = new Comment(commentJson, parentObj);
     })
 }
-
-// // For testing only
-// $.getJSON("comment.json", function (jsonData) {
-//     generateComments(jsonData[1])
-// })
-
 
 // Populate the functions window with 50 subreddits from the frontpage
 function populateFunctionsWindow() {
@@ -406,7 +433,16 @@ assume es:nothing, ss:nothing, ds:_data, fs:nothing, gs:nothing
 
 `
         }));
-    $("#rightcol").append(mainTile);
+    let mainTileObj = new CustomTile(mainTile);
+    // $("#rightcol").append(mainTile);
+}
+
+function repositionVisibleLeaderLines() {
+    $('.asm-box').each(function (i, el) {
+        if ($(this).isInViewport()) {
+            repositionTileLeaderLine($(this).data("obj"));
+        }
+    })
 }
 
 
@@ -414,11 +450,7 @@ $(document).ready(function () {
     populateFunctionsWindow();
     $("#rightcol").scroll(function () {
         // repositionLeaderLines();
-        $('.asm-box').each(function (i, el) {
-            if ($(this).isInViewport()) {
-                repositionTileLeaderLine($(this).data("obj"));
-            }
-        })
+        repositionVisibleLeaderLines();
     });
     insertMainTile();
 });
