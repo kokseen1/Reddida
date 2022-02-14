@@ -25,42 +25,13 @@ function getUrlFromPerma(perma, limit) {
     return getJson(url, limit);
 }
 
-// function viewPost() {
-//     let self = $(this).data("obj");
-//     let perma = self.data.permalink;
-//     let urlPerma = getUrlFromPerma(perma);
-//     console.log(urlPerma);
-//     $("body").empty();
-//     // $.getJSON(urlPerma, function (jsonData) {
-//     //     jsonData[1].data.children.forEach(commentJson => {
-//     //         let comment = new Comment(commentJson);
-//     //     })
-//     // })
-// }
-
-// function viewComment() {
-//     let self = $(this).data("obj");
-//     console.log(self.data);
-// }
-
-// function repositionLeaderLines() {
-//     leaderLines.forEach(lL => {
-//         lL.position();
-//     });
-// }
-
 function repositionTileLeaderLine(tileObj) {
     if (!tileObj) return;
     let leaderLineArr = tileObj.leaderLineArr;
     if (!leaderLineArr || leaderLineArr.length == 0) return;
     // console.log(leaderLineArr)
     leaderLineArr.forEach(function (lL) {
-        // try {
         lL.position();
-        // } catch {
-
-        // }
-
     })
 }
 
@@ -90,7 +61,22 @@ class Tile {
         this.data = rawJson;
         this.leaderLineArr = [];
         this.customElem = customElem;
+
         this.generate();
+    }
+
+    insertToCanvas() {
+        $("#rightcol").append(this.tileElem);
+        
+    }
+
+    setAttributes(){
+        this.tileElem.data("obj", this);
+        this.tileElem.draggable({
+            cancel: ".asm-content",
+            // containment: "#rightcol", // doesnt work because margin is blocking
+            drag: onTileDrag
+        });
     }
 
     generate() {
@@ -101,21 +87,13 @@ class Tile {
             .append($("<div/>", {
                 class: "asm-toolbar"
             }));
-
-
-        $("#rightcol").append(this.tileElem);
-        // Store this class object in element
-
+        this.insertToCanvas();
         this.generateTiles();
         this.generateArrows();
+        this.setAttributes();
 
-        this.tileElem.data("obj", this);
-
-        this.tileElem.draggable({
-            cancel: ".asm-content",
-            // containment: "#rightcol", // doesnt work because margin is blocking
-            drag: onTileDrag
-        });
+        // Performance hit?
+        repositionVisibleLeaderLines();
     }
 
     generateArrows() {
@@ -163,6 +141,8 @@ class Comment extends Tile {
                 class: "asm-content",
                 html: `<p class='asm-head'>${item.author}</p><span class='asm-var'>Score</span>= dword ptr  <span class='asm-var'>${intToHex(item.score)}h</span><p class='asm-title'>${item.body}</p>`
             }));
+
+        // Massive hit on performance
         // Generate the comment tree recursively
         generateComments(item.replies, this);
     };
@@ -190,11 +170,11 @@ class CustomTile extends Tile {
     }
 
     generateTiles() {
+        // Quite a bad implementation
+        // Re point tileElem to the new element
         this.tileElem.replaceWith(this.customElem);
         this.tileElem = this.customElem;
-        // this.tileElem.css(this.customElem.css());
     }
-
 }
 
 // Check for g keypress to open search for subreddit
@@ -244,15 +224,16 @@ function restoreCanvas() {
     clearCanvas();
     let prevObjsArr = active_tiles.pop();
     prevObjsArr.forEach(e => {
-        e.generate();
-        // console.log(e)
+        e.insertToCanvas();
+        e.generateArrows();
+        e.setAttributes();
     });
 }
 
 function clearCanvas() {
     // Remove all active leaderlines
-    for (let lL of leaderLines){
-    // leaderLines.forEach(lL => {
+    for (let lL of leaderLines) {
+        // leaderLines.forEach(lL => {
         lL.remove();
     };
     leaderLines.clear();
@@ -292,7 +273,6 @@ $(document).on("dblclick", ".asm-title", function () {
         // $.getJSON("comment.json", function (jsonData) {
         // console.log(jsonData);
         generateComments(jsonData[1]);
-        repositionVisibleLeaderLines();
     })
 });
 
