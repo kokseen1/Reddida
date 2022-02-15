@@ -97,12 +97,19 @@ class Tile {
     }
 
     generateArrows() {
+        let startSocket = 'top';
+        let endSocket = 'bottom';
+        if (this.constructor.name == "Comment") {
+            startSocket = 'left';
+            endSocket = 'right';
+        }
+
         if (this.parent) {
             let leaderLineObj = new LeaderLine($(this.tileElem)[0], $(this.parent.tileElem)[0], {
                 startPlug: "arrow1",
                 endPlug: "behind",
-                // startSocket: 'top',
-                // endSocket: 'bottom',
+                startSocket: startSocket,
+                endSocket: endSocket,
                 startSocketGravity: 1,
                 endSocketGravity: 1,
                 path: "grid",
@@ -128,7 +135,7 @@ class Comment extends Tile {
         let parentWidth = 40;
         let parent = this.parent;
         while (parent) {
-            parentWidth += $(parent.tileElem).width() + 60; // Incremental width
+            parentWidth += $(parent.tileElem).width() + 100; // Incremental width
             parent = parent.parent;
         }
         this.tileElem
