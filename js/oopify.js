@@ -93,7 +93,7 @@ class Tile {
         this.setAttributes();
 
         // Performance hit?
-        repositionVisibleLeaderLines();
+        // repositionVisibleLeaderLines();
     }
 
     generateArrows() {
@@ -139,7 +139,8 @@ class Comment extends Tile {
             parent = parent.parent;
         }
         this.tileElem
-            .css("margin-top", `-${(item.depth) * 10}px`)
+            // .css("margin-top", `-${(item.depth) * 10}px`)
+            .css("margin-top", `-10px`)
             .css("margin-bottom", `10px`)
             .css("margin-left", `0px`)
             .css("left", `${parentWidth.toString()}px`)
@@ -231,12 +232,17 @@ function close_messagebox() {
 
 function restoreCanvas() {
     clearCanvas();
-    let prevObjsArr = active_tiles.pop();
+    let [prevObjsArr, scrollPosArr] = active_tiles.pop();
     prevObjsArr.forEach(e => {
         e.insertToCanvas();
         e.generateArrows();
         e.setAttributes();
     });
+
+    // Restore scroll position
+    $("#rightcol").scrollTop(scrollPosArr[0]);
+    $("#rightcol").scrollLeft(scrollPosArr[1]);
+    repositionAllLeaderLines();
 }
 
 function clearCanvas() {
@@ -268,7 +274,8 @@ function saveAndClearCanvas() {
         obj.leaderLineArr = [];
         objArr.push(obj);
     })
-    active_tiles.push(objArr);
+
+    active_tiles.push([objArr, [$("#rightcol").scrollTop(), $("#rightcol").scrollLeft()]]);
     clearCanvas();
 }
 
@@ -282,6 +289,7 @@ $(document).on("dblclick", ".asm-title", function () {
         // $.getJSON("comment.json", function (jsonData) {
         // console.log(jsonData);
         generateComments(jsonData[1]);
+        repositionAllLeaderLines();
     })
 });
 
@@ -426,6 +434,12 @@ assume es:nothing, ss:nothing, ds:_data, fs:nothing, gs:nothing
         }));
     let mainTileObj = new CustomTile(mainTile);
     // $("#rightcol").append(mainTile);
+}
+
+function repositionAllLeaderLines() {
+    $('.asm-box').each(function (i, el) {
+        repositionTileLeaderLine($(this).data("obj"));
+    })
 }
 
 function repositionVisibleLeaderLines() {
