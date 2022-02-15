@@ -176,7 +176,7 @@ class Post extends Tile {
         this.tileElem
             .append($("<div/>", {
                 class: "asm-content",
-                html: `<p class='asm-head'>${item.author}</p><span class='asm-var'>Score</span>= dword ptr  <span class='asm-var'>${intToHex(item.score)}h</span><br><span class='asm-var'>Comments</span>= dword ptr  <span class='asm-var'>${intToHex(item.num_comments)}h</span><p class='asm-title'>${marked.parse(item.title)}</p>`
+                html: `<p class='asm-head'>${item.author}</p><span class='asm-var'>Score</span>= dword ptr  <span class='asm-var'>${intToHex(item.score)}h</span><br><span class='asm-var'>Comments</span>= dword ptr  <span class='asm-var'>${intToHex(item.num_comments)}h</span><p class='asm-title'>${item.title}</p>`
             }));
     };
 }
@@ -463,6 +463,7 @@ $(document).ready(function () {
     $("#rightcol").scroll(function () {
         // repositionLeaderLines();
         repositionVisibleLeaderLines();
+        // repositionAllLeaderLines();
     });
     insertMainTile();
 });

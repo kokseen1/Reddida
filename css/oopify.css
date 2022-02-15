@@ -31,6 +31,10 @@ table, td {
     padding: 0;
 }
 
+.leader-line{
+    z-index: -1;
+}
+
 .functions-window-item {
     display: flex;
     cursor: default;
@@ -52,7 +56,8 @@ table, td {
 }
 
 #mainarea {
-    background-color: violet;
+    /* background-color: #000000; */
+    background-image: linear-gradient(transparent, #e1f8ff5e);
     height: calc(100vh - 129px - 130px);
 }
 
@@ -63,7 +68,7 @@ table, td {
 
 
 #rightcol {
-    background-image: url("../img/bg.png");
+    /* background-image: url("../img/bg.png"); */
     background-repeat: no-repeat;
     background-size: cover;
     overflow: scroll;
@@ -72,7 +77,9 @@ table, td {
     width: 100%;
 }
 
-
+#rightcol::-webkit-scrollbar {
+    display: none;
+  }
 
 #leftcol {
     width: 306px;
