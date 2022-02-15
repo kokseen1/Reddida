@@ -122,7 +122,6 @@ class Tile {
         }
     }
 }
-
 class Comment extends Tile {
     constructor(rawJson, parentObj) {
         super(rawJson, parentObj)
@@ -138,6 +137,13 @@ class Comment extends Tile {
             parentWidth += $(parent.tileElem).width() + 100; // Incremental width
             parent = parent.parent;
         }
+        let tileContent = $("<p/>", {
+            class: "asm-title",
+            html: `${marked.parse(item.body)}`
+        });
+        tileContent.find("a").each(function () {
+            $(this).attr("target", "_blank")
+        })
         this.tileElem
             .css("margin-top", `-${Boolean(item.depth) * 10}px`)
             // .css("margin-top", `-10px`)
@@ -147,8 +153,9 @@ class Comment extends Tile {
 
             .append($("<div/>", {
                 class: "asm-content",
-                html: `<p class='asm-head'>${item.author}</p><span class='asm-var'>Score</span>= dword ptr  <span class='asm-var'>${intToHex(item.score)}h</span><p class='asm-title'>${item.body}</p>`
-            }));
+                html: `<p class='asm-head'>${item.author}</p><span class='asm-var'>Score</span>= dword ptr  <span class='asm-var'>${intToHex(item.score)}h</span>`
+            })
+                .append(tileContent));
 
         // Massive hit on performance
         // Comment depth limit
@@ -169,7 +176,7 @@ class Post extends Tile {
         this.tileElem
             .append($("<div/>", {
                 class: "asm-content",
-                html: `<p class='asm-head'>${item.author}</p><span class='asm-var'>Score</span>= dword ptr  <span class='asm-var'>${intToHex(item.score)}h</span><br><span class='asm-var'>Comments</span>= dword ptr  <span class='asm-var'>${intToHex(item.num_comments)}h</span><p class='asm-title'>${item.title}</p>`
+                html: `<p class='asm-head'>${item.author}</p><span class='asm-var'>Score</span>= dword ptr  <span class='asm-var'>${intToHex(item.score)}h</span><br><span class='asm-var'>Comments</span>= dword ptr  <span class='asm-var'>${intToHex(item.num_comments)}h</span><p class='asm-title'>${marked.parse(item.title)}</p>`
             }));
     };
 }
