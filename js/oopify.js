@@ -139,8 +139,8 @@ class Comment extends Tile {
             parent = parent.parent;
         }
         this.tileElem
-            // .css("margin-top", `-${(item.depth) * 10}px`)
-            .css("margin-top", `-10px`)
+            .css("margin-top", `-${Boolean(item.depth) * 10}px`)
+            // .css("margin-top", `-10px`)
             .css("margin-bottom", `10px`)
             .css("margin-left", `0px`)
             .css("left", `${parentWidth.toString()}px`)
