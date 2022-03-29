@@ -13,4 +13,6 @@
 - `Esc` to go back
 - `G` to goto a subreddit
 
+## Preview
+
 ![Screenshot](https://raw.githubusercontent.com/kokseen1/Reddida/main/sample.png)
