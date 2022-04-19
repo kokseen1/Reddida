@@ -15,4 +15,4 @@
 
 ## Preview
 
-![Screenshot](https://raw.githubusercontent.com/kokseen1/Reddida/main/sample.png)
+![Screenshot](https://raw.githubusercontent.com/kokseen1/Reddida/oopified/img/sample.png)
